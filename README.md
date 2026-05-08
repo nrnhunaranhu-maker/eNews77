@@ -1,2 +1,526 @@
 # eNews77
 монголын esport мэдээний site
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>eNews — Монголын Esport Мэдээ</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@500;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#f0f0f2;color:#111;font-family:'Roboto',sans-serif;font-size:14px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* TOPBAR */
+.topbar{background:#111113;height:34px;border-bottom:2px solid #1e1e22}
+.topbar-inner{max-width:1380px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:100%}
+.topbar-links{display:flex}
+.topbar-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#666;padding:0 16px;height:34px;display:flex;align-items:center;border-right:1px solid #222;transition:color .15s,background .15s}
+.topbar-link:first-child{border-left:1px solid #222}
+.topbar-link.active,.topbar-link:hover{color:#fff;background:#1a1a1e}
+.topbar-right{display:flex;gap:14px;align-items:center}
+.topbar-icon{color:#555;font-size:15px;cursor:pointer;transition:color .15s}
+.topbar-icon:hover{color:#fff}
+
+/* HEADER */
+.site-header{background:#111113;height:58px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.5)}
+.header-inner{max-width:1380px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:0;height:100%}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;padding-right:24px}
+.logo-hex{width:34px;height:34px;background:#e8132a;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-weight:900;font-size:16px;color:#fff}
+.logo-words{display:flex;flex-direction:column;line-height:1}
+.logo-main{font-family:'Barlow',sans-serif;font-size:20px;font-weight:900;color:#fff;letter-spacing:3px}
+.logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#e8132a;letter-spacing:3px;margin-top:1px}
+.main-nav{display:flex;height:58px;flex:1}
+.nav-item{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;color:#888;padding:0 20px;height:100%;display:flex;align-items:center;transition:color .15s,background .15s;white-space:nowrap;cursor:pointer}
+.nav-item:hover{color:#fff}
+.nav-item.active{color:#fff;background:#e8132a}
+.hdr-search{display:flex;margin-left:auto;flex-shrink:0}
+.hdr-search input{background:#1e1e22;border:1px solid #2a2a2e;border-right:none;color:#ccc;padding:7px 14px;font-size:13px;width:190px;outline:none;font-family:'Roboto',sans-serif}
+.hdr-search input::placeholder{color:#444}
+.hdr-search input:focus{border-color:#e8132a}
+.hdr-search button{background:#e8132a;border:none;color:#fff;padding:0 16px;font-size:16px;cursor:pointer;transition:background .15s}
+.hdr-search button:hover{background:#b50e21}
+
+/* BANNER */
+.hero-banner{height:175px;background:linear-gradient(135deg,#0a0006 0%,#1c0000 30%,#0d0000 50%,#00000d 70%,#060010 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.banner-glow-l{position:absolute;left:0;top:0;bottom:0;width:45%;background:linear-gradient(90deg,rgba(232,19,42,.25),transparent);pointer-events:none}
+.banner-glow-r{position:absolute;right:0;top:0;bottom:0;width:45%;background:linear-gradient(270deg,rgba(232,19,42,.18),transparent);pointer-events:none}
+.banner-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,19,42,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,19,42,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.banner-center{position:relative;z-index:2;display:flex;align-items:center;gap:20px}
+.banner-hex{width:64px;height:64px;background:#e8132a;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-weight:900;font-size:30px;color:#fff;box-shadow:0 0 40px rgba(232,19,42,.6)}
+.banner-name{display:flex;align-items:baseline;gap:4px}
+.bn-frag{font-family:'Barlow',sans-serif;font-size:48px;font-weight:900;color:#fff;letter-spacing:6px;line-height:1;text-shadow:0 0 60px rgba(232,19,42,.4)}
+.bn-mn{font-family:'Barlow',sans-serif;font-size:40px;font-weight:900;color:#e8132a;letter-spacing:2px}
+.banner-particle{position:absolute;width:4px;height:4px;background:#e8132a;border-radius:50%;opacity:.5;animation:bfloat 3s ease-in-out infinite}
+@keyframes bfloat{0%,100%{transform:translateY(0) scale(1);opacity:.5}50%{transform:translateY(-18px) scale(1.8);opacity:.1}}
+
+/* PAGE */
+.page-wrap{max-width:1380px;margin:0 auto;padding:0 20px}
+.page-grid{display:grid;grid-template-columns:272px 1fr 292px;gap:0;background:#e0e0e4;border:1px solid #d0d0d4;border-top:none;margin-top:16px}
+
+/* ===== LEFT: SCHEDULE ===== */
+.schedule-col{background:#fff;border-right:1px solid #e0e0e4}
+.sched-tabs{display:flex;border-bottom:2px solid #e0e0e4}
+.sched-tab{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;color:#888;background:none;border:none;border-bottom:3px solid transparent;padding:13px 0;cursor:pointer;transition:all .15s;margin-bottom:-2px}
+.sched-tab.active{color:#111;border-bottom-color:#e8132a}
+.sched-tab:hover{color:#111}
+.match-group{border-bottom:1px solid #ececec;cursor:pointer;transition:background .15s}
+.match-group:hover{background:#fafafa}
+.match-tourney{display:flex;align-items:center;gap:8px;background:#1a1a1e;padding:8px 10px}
+.game-badge{width:26px;height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.gb-cs{background:#ff6a00}.gb-d2{background:#1e8c3a}.gb-vlr{background:#e8132a}.gb-lol{background:#c8a951}.gb-mob{background:#0088ee}
+.tourney-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;color:#ccc;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.live-pill{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:#fff;background:#e8132a;padding:2px 6px;flex-shrink:0;animation:livepulse 1.5s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.65}}
+.soon-pill{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;color:#888;background:#2a2a2e;padding:2px 6px;flex-shrink:0}
+.match-teams{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;gap:6px}
+.m-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+.m-team.right{flex-direction:row-reverse}
+.t-badge{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.t-badge.c1{background:#c0392b}.t-badge.c2{background:#2980b9}.t-badge.c3{background:#1a6e38}.t-badge.c4{background:#d35400}
+.t-badge.c5{background:#8e44ad}.t-badge.c6{background:#27ae60}.t-badge.c7{background:#c8a951}.t-badge.c8{background:#0088ee}
+.m-team span{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;color:#333;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
+.vs-text{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;color:#bbb;flex-shrink:0}
+
+/* ===== CENTER FEED ===== */
+.center-col{background:#fff;border-right:1px solid #e0e0e4;min-width:0}
+
+/* HERO ARTICLE */
+.hero-art{position:relative;overflow:hidden;cursor:pointer;display:block}
+.hero-art-bg{height:340px;background:linear-gradient(135deg,#0a0a0f 0%,#1a0d00 40%,#2a0000 100%);position:relative;overflow:hidden;transition:transform .5s ease}
+.hero-art:hover .hero-art-bg{transform:scale(1.03)}
+.ha-big-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-size:130px;font-weight:900;color:rgba(255,255,255,.04);letter-spacing:12px;pointer-events:none;user-select:none}
+.ha-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.35) 55%,rgba(0,0,0,.05) 100%)}
+.ha-content{position:absolute;bottom:0;left:0;right:0;padding:22px 24px;z-index:2}
+.ha-cat{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:#fff;background:#e8132a;padding:4px 10px;margin-bottom:10px}
+.ha-title{font-family:'Barlow',sans-serif;font-size:21px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:10px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.ha-meta{display:flex;align-items:center;gap:14px;font-size:12px;color:#aaa}
+
+/* SUB GRID */
+.sub-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ececec}
+.sub-card{cursor:pointer;transition:background .15s;overflow:hidden;border-right:1px solid #ececec}
+.sub-card:last-child{border-right:none}
+.sub-card:hover{background:#fafafa}
+.sub-img{height:130px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sub-bg-text{font-family:'Barlow',sans-serif;font-size:58px;font-weight:900;color:rgba(255,255,255,.06);letter-spacing:4px}
+.sub-cat-pill{position:absolute;bottom:10px;left:10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#fff;padding:3px 8px}
+.sub-body{padding:12px 14px}
+.sub-cat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:5px}
+.sub-body h3{font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;color:#1a1a1a;line-height:1.35;margin-bottom:7px}
+.sub-meta{display:flex;gap:10px;font-size:11px;color:#999}
+
+/* MORE NEWS */
+.more-news{padding:18px;border-top:1px solid #ececec}
+.mn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mn-title{font-family:'Barlow',sans-serif;font-size:15px;font-weight:800;color:#111}
+.mn-all{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#e8132a;transition:color .15s}
+.mn-all:hover{color:#b50e21}
+.nc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e8e8ec}
+.nc{background:#fff;cursor:pointer;transition:background .15s;overflow:hidden}
+.nc:hover{background:#f8f8f8}
+.nc-img{height:78px;display:flex;align-items:center;justify-content:center}
+.nc-label{font-family:'Barlow',sans-serif;font-size:26px;font-weight:900;color:rgba(255,255,255,.08);letter-spacing:2px}
+.nc-body{padding:9px 11px}
+.nc-cat{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:4px}
+.nc-body h4{font-family:'Barlow',sans-serif;font-size:12px;font-weight:700;color:#222;line-height:1.3;margin-bottom:5px}
+.nc-meta{font-size:11px;color:#999}
+.cat-cs{color:#ff6a00}.cat-d2{color:#1e8c3a}.cat-vlr{color:#e8132a}.cat-mob{color:#0088ee}.cat-gen{color:#e8132a}
+
+/* ===== RIGHT PANEL ===== */
+.right-col{background:#fff}
+.rp-widget{border-bottom:1px solid #ececec}
+.rp-hdr{display:flex;align-items:center;gap:10px;padding:13px 14px 10px;border-bottom:1px solid #ececec;background:#fafafa}
+.rp-title{font-family:'Barlow',sans-serif;font-size:13px;font-weight:800;color:#111;letter-spacing:.3px}
+.rp-logo-hex{width:18px;height:18px;background:#e8132a;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-weight:900;font-size:8px;color:#fff}
+
+/* HEADLINES */
+.hl-list{padding:2px 0}
+.hl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background .15s}
+.hl-item:last-child{border-bottom:none}
+.hl-item:hover{background:#fafafa}
+.hl-num{font-family:'Barlow',sans-serif;font-size:18px;font-weight:800;color:#e8132a;flex-shrink:0;line-height:1.2;opacity:.8}
+.hl-text{font-size:12px;color:#333;line-height:1.4;transition:color .15s}
+.hl-item:hover .hl-text{color:#e8132a}
+
+/* TOP PLAYERS */
+.tp-list{padding:6px 0}
+.tp-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;transition:background .15s}
+.tp-item:hover{background:#fafafa}
+.tp-rank{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:#bbb;width:20px;flex-shrink:0}
+.tp-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.tp-name{font-family:'Barlow',sans-serif;font-size:12px;font-weight:700;color:#222}
+.tp-detail{font-size:11px;color:#999}
+
+/* EVENTS */
+.ev-list{padding:4px 0}
+.ev-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;transition:background .15s}
+.ev-item:last-child{border-bottom:none}
+.ev-item:hover{background:#fafafa}
+.ev-date{text-align:center;border-left:3px solid #e8132a;padding:4px 10px;flex-shrink:0;min-width:50px;background:#fef8f8}
+.ev-date.d2{border-left-color:#1e8c3a;background:#f8fef9}
+.ev-date.vlr{border-left-color:#e8132a;background:#fff8f8}
+.ev-d{display:block;font-family:'Barlow',sans-serif;font-size:19px;font-weight:800;color:#111;line-height:1}
+.ev-m{display:block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;color:#888}
+.ev-name{font-family:'Barlow',sans-serif;font-size:12px;font-weight:700;color:#222;margin-bottom:2px}
+.ev-sub{font-size:11px;color:#999}
+
+/* SOCIALS */
+.soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e8e8ec;margin:1px}
+.soc-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;color:#fff;transition:filter .15s;cursor:pointer}
+.soc-btn:hover{filter:brightness(1.15)}
+.soc-btn em{font-style:normal;font-size:10px;opacity:.8;margin-top:2px;font-weight:400}
+.soc-yt{background:#c4302b}.soc-dc{background:#5865f2}.soc-tw{background:#111}.soc-ttv{background:#9146ff}
+
+/* FOOTER */
+.site-footer{background:#111113;padding:22px 20px;margin-top:16px}
+.footer-inner{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.footer-logo{display:flex;align-items:center;gap:9px;font-family:'Barlow',sans-serif;font-size:17px;font-weight:900;color:#fff;letter-spacing:2px}
+.footer-logo-hex{width:26px;height:26px;background:#e8132a;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-family:'Barlow',sans-serif;font-weight:900;font-size:11px;color:#fff}
+.footer-links{display:flex;gap:22px}
+.footer-links a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:#555;transition:color .15s}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:11px;color:#444}
+
+/* ENTRANCE ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hero-art{animation:fadeIn .5s ease .1s both}
+.match-group:nth-child(1){animation:fadeLeft .3s ease .1s both}
+.match-group:nth-child(2){animation:fadeLeft .3s ease .18s both}
+.match-group:nth-child(3){animation:fadeLeft .3s ease .26s both}
+.match-group:nth-child(4){animation:fadeLeft .3s ease .34s both}
+.match-group:nth-child(5){animation:fadeLeft .3s ease .42s both}
+.sub-card:nth-child(1){animation:fadeUp .4s ease .2s both}
+.sub-card:nth-child(2){animation:fadeUp .4s ease .3s both}
+.hl-item:nth-child(1){animation:fadeIn .3s ease .1s both}
+.hl-item:nth-child(2){animation:fadeIn .3s ease .16s both}
+.hl-item:nth-child(3){animation:fadeIn .3s ease .22s both}
+.hl-item:nth-child(4){animation:fadeIn .3s ease .28s both}
+.hl-item:nth-child(5){animation:fadeIn .3s ease .34s both}
+.hl-item:nth-child(6){animation:fadeIn .3s ease .4s both}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#f0f0f0}
+::-webkit-scrollbar-thumb{background:#ccc}
+::-webkit-scrollbar-thumb:hover{background:#e8132a}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .page-grid{grid-template-columns:250px 1fr}
+  .right-col{display:none}
+}
+@media(max-width:768px){
+  .page-grid{grid-template-columns:1fr}
+  .schedule-col{display:none}
+  .main-nav{display:none}
+  .nc-grid,.sub-grid{grid-template-columns:1fr}
+  .hdr-search{display:none}
+  .bn-frag{font-size:38px}
+  .bn-mn{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-links">
+      <a href="#" class="topbar-link active">eNews ESPORTS</a>
+      <a href="#" class="topbar-link">eNews ENTERTAINMENT</a>
+      <a href="#" class="topbar-link">eNews BATTLES</a>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-icon">🔔</span>
+      <span class="topbar-icon">👤</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-hex">e</div>
+      <div class="logo-words">
+        <span class="logo-main">eNews</span>
+        <span class="logo-sub">ESPORT NEWS</span>
+      </div>
+    </a>
+    <nav class="main-nav">
+      <a href="#" class="nav-item active">ТОГЛООМ</a>
+      <a href="#" class="nav-item">МЭДЭЭ</a>
+      <a href="#" class="nav-item">ТЭМЦЭЭН</a>
+      <a href="#" class="nav-item">ТОГЛОЛТ</a>
+      <a href="#" class="nav-item">RANKINGS</a>
+    </nav>
+    <div class="hdr-search">
+      <input type="text" placeholder="Хайх..."/>
+      <button>🔍</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="banner-glow-l"></div>
+  <div class="banner-glow-r"></div>
+  <div class="banner-grid"></div>
+  <div class="banner-center">
+    <div class="banner-hex">e</div>
+    <div class="banner-name">
+      <span class="bn-frag">eNews</span>
+      <span class="bn-mn"></span>
+    </div>
+  </div>
+  <div class="banner-particle" style="left:12%;top:25%;animation-delay:0s"></div>
+  <div class="banner-particle" style="left:22%;top:65%;animation-delay:.5s"></div>
+  <div class="banner-particle" style="left:68%;top:28%;animation-delay:.9s"></div>
+  <div class="banner-particle" style="left:80%;top:68%;animation-delay:1.3s"></div>
+  <div class="banner-particle" style="left:44%;top:18%;animation-delay:.7s"></div>
+</div>
+
+<!-- PAGE -->
+<div class="page-wrap">
+<div class="page-grid">
+
+<!-- ===== LEFT: SCHEDULE ===== -->
+<aside class="schedule-col">
+  <div class="sched-tabs">
+    <button class="sched-tab active" onclick="this.parentElement.querySelectorAll('.sched-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">ХУВААРЬ</button>
+    <button class="sched-tab" onclick="this.parentElement.querySelectorAll('.sched-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">ҮР ДҮН</button>
+  </div>
+
+  <div class="match-group">
+    <div class="match-tourney">
+      <div class="game-badge gb-cs">CS</div>
+      <span class="tourney-name">MEF Spring Championship</span>
+      <span class="live-pill">ШУУД</span>
+    </div>
+    <div class="match-teams">
+      <div class="m-team"><div class="t-badge c1">MW</div><span>Mongolian Wolves</span></div>
+      <span class="vs-text">VS</span>
+      <div class="m-team right"><span>SteppeForce</span><div class="t-badge c2">SF</div></div>
+    </div>
+  </div>
+
+  <div class="match-group">
+    <div class="match-tourney">
+      <div class="game-badge gb-d2">D2</div>
+      <span class="tourney-name">ESL One Mongolia Qualifier</span>
+      <span class="live-pill">ШУУД</span>
+    </div>
+    <div class="match-teams">
+      <div class="m-team"><div class="t-badge c3">BW</div><span>Black Wind</span></div>
+      <span class="vs-text">VS</span>
+      <div class="m-team right"><span>Dragon Fire</span><div class="t-badge c4">DF</div></div>
+    </div>
+  </div>
+
+  <div class="match-group">
+    <div class="match-tourney">
+      <div class="game-badge gb-vlr">VL</div>
+      <span class="tourney-name">VCT Mongolia Qualifier S2</span>
+      <span class="soon-pill">15:00</span>
+    </div>
+    <div class="match-teams">
+      <div class="m-team"><div class="t-badge c5">MS</div><span>Mongolian Storm</span></div>
+      <span class="vs-text">VS</span>
+      <div class="m-team right"><span>Steppe Eagles</span><div class="t-badge c6">SE</div></div>
+    </div>
+  </div>
+
+  <div class="match-group">
+    <div class="match-tourney">
+      <div class="game-badge gb-lol">LoL</div>
+      <span class="tourney-name">LoL Esports World Cup 2026</span>
+      <span class="live-pill">ШУУД</span>
+    </div>
+    <div class="match-teams">
+      <div class="m-team"><div class="t-badge c7">KT</div><span>KT Rolster</span></div>
+      <span class="vs-text">VS</span>
+      <div class="m-team right"><span>BLG</span><div class="t-badge c8">BL</div></div>
+    </div>
+  </div>
+
+  <div class="match-group">
+    <div class="match-tourney">
+      <div class="game-badge gb-mob">ML</div>
+      <span class="tourney-name">MLBB Mongolia Cup S3</span>
+      <span class="soon-pill">18:00</span>
+    </div>
+    <div class="match-teams">
+      <div class="m-team"><div class="t-badge c1">GS</div><span>GoldenSword</span></div>
+      <span class="vs-text">VS</span>
+      <div class="m-team right"><span>Nomad Kings</span><div class="t-badge c3">NK</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== CENTER ===== -->
+<section class="center-col">
+
+  <!-- HERO ARTICLE -->
+  <a href="#" class="hero-art">
+    <div class="hero-art-bg">
+      <div class="ha-big-text">CS2</div>
+      <div class="ha-overlay"></div>
+      <div class="ha-content">
+        <div class="ha-cat">🎮 CS2</div>
+        <h1 class="ha-title">Mongolian Wolves CS2 тим IEM Katowice 2026-д оролцох эрхээ авлаа — Монголын esport-ын түүхэн амжилт</h1>
+        <div class="ha-meta">
+          <span>✍️ Б.Ганбат</span>
+          <span>2026 оны 5-р сарын 4</span>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- SUB GRID -->
+  <div class="sub-grid">
+    <div class="sub-card">
+      <div class="sub-img" style="background:linear-gradient(135deg,#0a1500,#1a3300)">
+        <div class="sub-bg-text">D2</div>
+        <div class="sub-cat-pill" style="background:#1e8c3a">DOTA 2</div>
+      </div>
+      <div class="sub-body">
+        <div class="sub-cat-label cat-d2">DOTA 2</div>
+        <h3>ESL One 2026-д Монголын баг top-8 орлоо — тэмцээний түүхэн дэх анхны удаа</h3>
+        <div class="sub-meta"><span>Д.Мөнхбат</span><span>2026.05.03</span></div>
+      </div>
+    </div>
+    <div class="sub-card">
+      <div class="sub-img" style="background:linear-gradient(135deg,#150000,#330000)">
+        <div class="sub-bg-text">VLR</div>
+        <div class="sub-cat-pill" style="background:#e8132a">VALORANT</div>
+      </div>
+      <div class="sub-body">
+        <div class="sub-cat-label cat-vlr">VALORANT</div>
+        <h3>VCT 2026 Монголын qualifier эхэллээ — 24 баг оролцоход бэлэн болжээ</h3>
+        <div class="sub-meta"><span>О.Сарнай</span><span>2026.05.02</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MORE NEWS -->
+  <div class="more-news">
+    <div class="mn-header">
+      <div class="mn-title">Ерөнхий мэдээ</div>
+      <a href="#" class="mn-all">БҮГДИЙГ ХАРАХ →</a>
+    </div>
+    <div class="nc-grid">
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#0a0a1a,#1a1a33)"><span class="nc-label">CS2</span></div>
+        <div class="nc-body"><div class="nc-cat cat-cs">CS2</div><h4>FACEIT Major 2026-д Монголын тоглогч анх удаа бие даан оролцлоо</h4><div class="nc-meta">Б.Ганбат · 2026.05.04</div></div>
+      </div>
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#001500,#003300)"><span class="nc-label">D2</span></div>
+        <div class="nc-body"><div class="nc-cat cat-d2">DOTA 2</div><h4>Team Liquid Монголын 2 тоглогчтой гэрээ байгуулах санал тавьжээ</h4><div class="nc-meta">Д.Мөнхбат · 2026.05.04</div></div>
+      </div>
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#150010,#330028)"><span class="nc-label">VLR</span></div>
+        <div class="nc-body"><div class="nc-cat cat-vlr">VALORANT</div><h4>Mongolian Storm Valorant баг Pacific League-д дэвшиж ороод байна</h4><div class="nc-meta">О.Сарнай · 2026.05.03</div></div>
+      </div>
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#00101a,#002233)"><span class="nc-label">ML</span></div>
+        <div class="nc-body"><div class="nc-cat cat-mob">MOBILE</div><h4>MLBB M7 World Championship — Монголын төлөөлөгч бэлтгэлээ эхэллээ</h4><div class="nc-meta">Б.Нарандэлгэр · 2026.05.03</div></div>
+      </div>
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#1a0a00,#331500)"><span class="nc-label">⚡</span></div>
+        <div class="nc-body"><div class="nc-cat cat-gen">ТЭМЦЭЭН</div><h4>MEF Монголын Esport Аварга 2026 шагналын сан $50,000 болж нэмэгдлээ</h4><div class="nc-meta">Редакц · 2026.05.02</div></div>
+      </div>
+      <div class="nc">
+        <div class="nc-img" style="background:linear-gradient(135deg,#0a0015,#1a0033)"><span class="nc-label">🏆</span></div>
+        <div class="nc-body"><div class="nc-cat cat-cs">CS2</div><h4>G2 Esports Монголын стример FragKing-г бренд элчээр томиллоо</h4><div class="nc-meta">Х.Болд · 2026.05.01</div></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== RIGHT PANEL ===== -->
+<aside class="right-col">
+
+  <div class="rp-widget">
+    <div class="rp-hdr">
+      <div class="rp-logo-hex">e</div>
+      <span class="rp-title">Шилдэг мэдээ</span>
+    </div>
+    <div class="hl-list">
+      <a href="#" class="hl-item"><span class="hl-num">01</span><span class="hl-text">Mongolian Wolves IEM Katowice 2026-д шалгарлаа — $1M шагналын сангийн тэмцээн</span></a>
+      <a href="#" class="hl-item"><span class="hl-num">02</span><span class="hl-text">Team Liquid Монголын тоглогч скаутлаж байна — CS2-ийн дэлхийн тэргүүний баг</span></a>
+      <a href="#" class="hl-item"><span class="hl-num">03</span><span class="hl-text">VCT 2026 Pacific Монголын qualifier үр дүн: 8 баг шалгарлаа</span></a>
+      <a href="#" class="hl-item"><span class="hl-num">04</span><span class="hl-text">MEF Монголын Esport Аварга шагналын сан $50,000 болгон нэмэгдүүллээ</span></a>
+      <a href="#" class="hl-item"><span class="hl-num">05</span><span class="hl-text">MLBB Mongolia Cup Season 3 бүртгэл нээгдлээ — 32 баг оролцох боломжтой</span></a>
+      <a href="#" class="hl-item"><span class="hl-num">06</span><span class="hl-text">G2 Esports Монголын контент бүтээгч FragKing-тай гэрээ байгуулжээ</span></a>
+    </div>
+  </div>
+
+  <div class="rp-widget">
+    <div class="rp-hdr"><span class="rp-title">🏅 Топ тоглогч</span></div>
+    <div class="tp-list">
+      <div class="tp-item"><span class="tp-rank">#1</span><div class="tp-ava" style="background:linear-gradient(135deg,#c0392b,#7b241c)">BK</div><div><div class="tp-name">B.Khurelbat</div><div class="tp-detail">CS2 · FACEIT Lv10 · 2847 ELO</div></div></div>
+      <div class="tp-item"><span class="tp-rank">#2</span><div class="tp-ava" style="background:linear-gradient(135deg,#1a5276,#154360)">GM</div><div><div class="tp-name">G.Munkh</div><div class="tp-detail">Dota 2 · Immortal · 9124 MMR</div></div></div>
+      <div class="tp-item"><span class="tp-rank">#3</span><div class="tp-ava" style="background:linear-gradient(135deg,#b7950b,#7d6608)">DS</div><div><div class="tp-name">D.Sarnai</div><div class="tp-detail">Valorant · Radiant · 1980 RR</div></div></div>
+    </div>
+  </div>
+
+  <div class="rp-widget">
+    <div class="rp-hdr"><span class="rp-title">📅 Удахгүй болох</span></div>
+    <div class="ev-list">
+      <div class="ev-item"><div class="ev-date"><span class="ev-d">10</span><span class="ev-m">МАЙ</span></div><div><div class="ev-name">MEF Spring Championship</div><div class="ev-sub">CS2 · $15,000 prize pool</div></div></div>
+      <div class="ev-item"><div class="ev-date vlr"><span class="ev-d">15</span><span class="ev-m">МАЙ</span></div><div><div class="ev-name">VCT Mongolia Qualifier</div><div class="ev-sub">Valorant · Online</div></div></div>
+      <div class="ev-item"><div class="ev-date d2"><span class="ev-d">22</span><span class="ev-m">МАЙ</span></div><div><div class="ev-name">Mongolian Dota 2 Cup</div><div class="ev-sub">Dota 2 · $8,000 prize pool</div></div></div>
+    </div>
+  </div>
+
+  <div class="rp-widget">
+    <div class="rp-hdr"><span class="rp-title">📢 Дагах</span></div>
+    <div class="soc-grid">
+      <a href="#" class="soc-btn soc-yt">▶ YouTube<em>12.4K</em></a>
+      <a href="#" class="soc-btn soc-dc">⚡ Discord<em>8.1K</em></a>
+      <a href="#" class="soc-btn soc-tw">𝕏 Twitter<em>5.3K</em></a>
+      <a href="#" class="soc-btn soc-ttv">● Twitch<em>3.9K</em></a>
+    </div>
+  </div>
+
+</aside>
+
+</div><!-- /page-grid -->
+</div><!-- /page-wrap -->
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-logo-hex">e</div>
+      eNews
+    </div>
+    <div class="footer-links">
+      <a href="#">Бидний тухай</a>
+      <a href="#">Холбоо барих</a>
+      <a href="#">Нийтлэлийн дүрэм</a>
+      <a href="#">Зар сурталчилгаа</a>
+    </div>
+    <div class="footer-copy">© 2026 eNews — Монголын Esport Мэдээний Сүлжээ</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.nav-item').forEach(n=>{
+  n.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));n.classList.add('active')});
+});
+document.querySelectorAll('.topbar-link').forEach(n=>{
+  n.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.topbar-link').forEach(x=>x.classList.remove('active'));n.classList.add('active')});
+});
+const si=document.querySelector('.hdr-search input');
+const sb=document.querySelector('.hdr-search button');
+if(sb){sb.addEventListener('click',()=>{if(si.value.trim())console.log('search:',si.value)});si.addEventListener('keydown',e=>{if(e.key==='Enter')sb.click()})}
+</script>
+</body>
+</html>
